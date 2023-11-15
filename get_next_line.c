@@ -99,6 +99,11 @@ void ft_set_new(t_list **lst)
 	}
 	new = ft_strdup(ft_strchr((*lst)->content, '\n') + 1);
 	node = malloc(sizeof(t_list));
+	if (!node)
+	{
+		*lst = NULL;
+		return ;
+	}
 	node->next = NULL;
 	node->content = new;
 	*lst = node;
@@ -173,7 +178,7 @@ char	*get_next_line(int fd)
 		if (ft_strchr(buff, '\n'))
 			return (ft_line(&lst));
 	}	  
-	return (NULL);
+	return (ft_line(&lst));
 }
 
 #include <fcntl.h>
@@ -182,15 +187,15 @@ int main (void)
 {	
 	int fd = open("text", 'r');
 	char *s;
-	s = get_next_line(fd);
-	printf("%s", s);
-	/*while (1)
+	//s = get_next_line(fd);
+	//printf("%s", s);
+	while (1)
 	{
 		s = get_next_line(fd);
 		if (!s)
 			break;
 		printf("%s", s);
 		free(s);
-	}*/
+	}
 	return (0);
 }
