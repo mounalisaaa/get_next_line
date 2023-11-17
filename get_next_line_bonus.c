@@ -6,7 +6,7 @@
 /*   By: melyaaco <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:07:30 by melyaaco          #+#    #+#             */
-/*   Updated: 2023/11/16 19:07:31 by melyaaco         ###   ########.fr       */
+/*   Updated: 2023/11/17 14:33:46 by melyaaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,29 +87,10 @@ char	*get_next_line(int fd)
 {
 	static t_list	*fd_arr[1024];
 
-	if (fd < 0 || fd > 1023 || read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0 || BUFFER_SIZE > 0xffffffff
+		|| (read(fd, NULL, 0)) < 0)
 		return (NULL);
 	if (fd_arr[fd] && ft_strchr(fd_arr[fd]->content, '\n'))
 		return (ft_line(&fd_arr[fd]));
 	return (helper(&fd_arr[fd], fd));
 }
-/*
-#include <fcntl.h>
-int main(void)
-{
-	int fd = open("text", 'r');
-	int fd1 = open("text1", 'r');
-	int fd2 = open("text2", 'r');
-	while (1)
-	{
-		char *s = get_next_line(fd);
-		char *s1 = get_next_line(fd1);
-		char *s2 = get_next_line(fd2);
-		if (!s || !s1 || !s2)
-			break;
-		printf("%s", s);
-		printf("%s", s1);
-		printf("%s", s2);
-	}
-	return (0);
-}*/

@@ -6,7 +6,7 @@
 /*   By: melyaaco <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:50:33 by melyaaco          #+#    #+#             */
-/*   Updated: 2023/11/16 19:09:13 by melyaaco         ###   ########.fr       */
+/*   Updated: 2023/11/17 14:34:15 by melyaaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*helper(t_list **lst, int fd)
 
 	while (1)
 	{
-		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
 		if (!buff)
 			return (NULL);
 		bytesread = read(fd, buff, BUFFER_SIZE);
@@ -88,29 +88,10 @@ char	*get_next_line(int fd)
 {
 	static t_list	*lst;	
 
-	if (fd < 0 || fd > 1023 || read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0 || BUFFER_SIZE > 0xffffffff
+		|| (read(fd, NULL, 0)) < 0)
 		return (NULL);
 	if (lst && ft_strchr(lst->content, '\n'))
 		return (ft_line(&lst));
 	return (helper(&lst, fd));
 }
-/*
-#include <fcntl.h>
-int main(void)
-{
-	int fd = open("text", 'r');
-	char *s;
-	
-	s = get_next_line(fd);
-	printf("%s", s);
-	while (1)
-	{
-		s = get_next_line(fd);
-		if (!s)
-			break;
-		printf("%s", s);
-		free(s);
-	}
-	//system("leaks a.out");
-	return (0);
-}*/
